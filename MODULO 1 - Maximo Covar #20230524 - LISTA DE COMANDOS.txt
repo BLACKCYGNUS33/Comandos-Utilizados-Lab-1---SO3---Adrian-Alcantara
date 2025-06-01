@@ -1,0 +1,81 @@
+MAXIMO COVAR #2023-0524 - SISTEMAS OPERATIVOS 3 - ADRIAN ALCANTARA
+
+----------------------------------------------
+Practica 2: Configuración de parametros de red
+----------------------------------------------
+(para modificar la red manualmente)
+nmcli connection modify "Wired Connection 1" ipv4.method manual
+ipv4.addresses "192.168.1.50/24"
+ipv4.gateway "192.168.1.1"
+ipv4.dns "8.8.8.8,8.8.4.4"
+nmcli connection up "Wired connection 1"
+
+ip a (para ver los resultados)
+ip route | grep default
+cat /etc/resolv.conf
+
+(para DHCP)
+sudo nmcli connection modify "Wired connection 1" ipv4.method auto
+
+(PARA CONFIGURAR DNS)
+nmcli connection modify "Wired connection 1" ipv4.dns "8.8.8.8 8.8.4.4"
+nmcli connection up "Wired connection 1"
+sudo nano /etc/resolv.conf (para verificar)
+
+(LUEGO LO OTRO ES MEDIANTE INTERFAZ GRAFICA)
+
+---------------------------------------
+Practica 3: Gestion de Usuario y grupos
+---------------------------------------
+
+(para crear usuarios y grupos, agregar usuarios a los grupos y eliminar grupos y usuarios)
+
+sudo useradd max
+sudo passwd max
+1987
+1987 (usado como contrasena)
+sudo usermod -aG wheel max (aqui se agrega a los sudoers)
+
+id max (deberia aparecer el grupo al que "max" ha sido asignado)
+
+(para crear un grupo)
+
+sudo groupadd guest
+sudo useradd -g guest invitado
+sudo passwd invitado
+1987
+1987 (utilizado como contrasena)
+groups invitado (deberia mostrar el grupo al que invitado es perteneciente)
+
+(para eliminar usuarios  grupos)
+sudo userdel -r invitado
+sudo groupdel guest
+
+
+-------------------------------------------
+Practica 4: Gestion de Permisos de archivos
+-------------------------------------------
+
+(para crear directorios, crear mediante vi, copiar y eliminar directorios y archivos)
+
+mkdir materia
+cd materia
+vi estudiante.txt (presionamos i para entrar al modo de INSERTAR y escribimos el nombre y matricula, luego, apretamos escape y escribimos ':wq' para guardar y salir)
+
+ls -l estudiante.txt (para ver los permisos actuales)
+chmod 700 estudiante.txt (solo los sudoers tendran permiso para ingresar a este archivo)
+
+(para asegurarse de que el archivo pertenezca a un grupo especifico, se utiliza el siguiente comando)
+
+sudo chown :wheel estudiante.txt
+
+chmod 070 estudiante.txt (para que solo los usuarios del grupo asignado puedan leer, escribir y ejecutar el archivo)
+
+cd ..
+
+mkdir materia2
+cp materia/estudiante.txt materia2/
+
+(eliminar directorio)
+
+rm -rf materia
